@@ -15,7 +15,7 @@ class PDFExtractionInput(BaseModel):
 
 
 def normalize_markdown_output(markdown_output: str | list[dict]) -> str:
-    """Normalize PyMuPDF4LLM markdown output into a single text string."""
+    """Normalize PyMuPDF4LLM output into one Markdown document string."""
 
     if isinstance(markdown_output, list):
         return "\n".join(str(page.get("text", "")) for page in markdown_output).strip()
