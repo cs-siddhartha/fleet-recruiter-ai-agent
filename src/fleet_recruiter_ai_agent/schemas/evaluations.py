@@ -2,6 +2,8 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
+from fleet_recruiter_ai_agent.schemas.analysis import CandidateScorecard
+
 
 class EvaluationStatus(StrEnum):
     """Lifecycle states for a candidate evaluation."""
@@ -17,7 +19,9 @@ class EvaluationStage(StrEnum):
 
     QUEUED = "queued"
     PARSING_RESUME = "parsing_resume"
-    ANALYZING = "analyzing"
+    ANALYZING_JD = "analyzing_jd"
+    ANALYZING_RESUME = "analyzing_resume"
+    GENERATING_SCORECARD = "generating_scorecard"
     COMPLETE = "complete"
     ERROR = "error"
 
@@ -32,3 +36,4 @@ class EvaluationRecord(BaseModel):
     stage: EvaluationStage
     error: str | None = None
     resume_text: str | None = None
+    result: CandidateScorecard | None = None

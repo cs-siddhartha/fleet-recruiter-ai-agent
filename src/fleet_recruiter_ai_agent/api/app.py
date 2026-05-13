@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import BackgroundTasks, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from fleet_recruiter_ai_agent.config import settings
@@ -8,7 +8,7 @@ from fleet_recruiter_ai_agent.data.jobs import get_job, list_jobs
 from fleet_recruiter_ai_agent.schemas.evaluations import EvaluationRecord, EvaluationStage, EvaluationStatus
 from fleet_recruiter_ai_agent.schemas.jobs import JobDetail, JobSummary
 from fleet_recruiter_ai_agent.services.evaluation_store import evaluation_store
-from fleet_recruiter_ai_agent.tools.pdf_extraction import PDFExtractionInput, extract_resume_text
+from fleet_recruiter_ai_agent.services.evaluator import run_evaluation
 
 
 app = FastAPI(title=settings.app_name)
@@ -39,10 +39,15 @@ def get_job_detail(job_id: str) -> JobDetail:
 
 
 @app.post("/api/jobs/{job_id}/evaluations", response_model=EvaluationRecord)
-async def create_evaluation(job_id: str, resume: UploadFile = File(...)) -> EvaluationRecord:
+async def create_evaluation(
+    job_id: str,
+    background_tasks: BackgroundTasks,
+    resume: UploadFile = File(...),
+) -> EvaluationRecord:
     """Accept a candidate PDF resume and create an evaluation record for a job."""
 
-    if get_job(job_id) is None:
+    job = get_job(job_id)
+    if job is None:
         raise HTTPException(status_code=404, detail="Job not found.")
     file_name = resume.filename
     if file_name is None or not file_name.lower().endswith(".pdf"):
@@ -56,15 +61,9 @@ async def create_evaluation(job_id: str, resume: UploadFile = File(...)) -> Eval
         stage=EvaluationStage.QUEUED,
     )
     evaluation_store.create(evaluation)
-    evaluation_store.update_stage(evaluation.evaluation_id, EvaluationStage.PARSING_RESUME)
-
     content = await resume.read()
-    try:
-        parsed_resume = extract_resume_text(PDFExtractionInput(file_name=file_name, content=content))
-    except ValueError as exc:
-        return evaluation_store.fail(evaluation.evaluation_id, str(exc))
-
-    return evaluation_store.save_resume_text(evaluation.evaluation_id, parsed_resume.text)
+    background_tasks.add_task(run_evaluation, evaluation.evaluation_id, job, file_name, content)
+    return evaluation
 
 
 @app.get("/api/evaluations/{evaluation_id}", response_model=EvaluationRecord)
