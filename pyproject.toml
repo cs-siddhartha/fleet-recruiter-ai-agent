@@ -13,15 +13,28 @@ dependencies = [
     "httpx>=0.28.1",
     "openai>=2.36.0",
     "pydantic>=2.13.4",
-    "pydantic-settings>=2.14.1",
     "pymupdf4llm>=1.27.2.3",
+    "python-dotenv>=1.2.2",
     "python-multipart>=0.0.28",
     "uvicorn>=0.46.0",
 ]
 
-[project.scripts]
-fleet-recruiter-ai-agent = "fleet_recruiter_ai_agent:main"
-
 [build-system]
 requires = ["uv_build>=0.11.3,<0.12.0"]
 build-backend = "uv_build"
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-module-docstring",
+    "too-many-arguments",
+    "too-many-positional-arguments",
+    "broad-exception-caught",
+]
+
+[dependency-groups]
+dev = [
+    "pylint>=4.0.5",
+]

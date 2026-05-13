@@ -21,6 +21,7 @@ class EvaluationStage(StrEnum):
     PARSING_RESUME = "parsing_resume"
     ANALYZING_JD = "analyzing_jd"
     ANALYZING_RESUME = "analyzing_resume"
+    ENRICHING_GITHUB = "enriching_github"
     GENERATING_SCORECARD = "generating_scorecard"
     COMPLETE = "complete"
     ERROR = "error"

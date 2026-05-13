@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from fleet_recruiter_ai_agent.schemas.analysis import CandidateScorecard, JDAnalysis, ResumeAnalysis
+from fleet_recruiter_ai_agent.schemas.enrichment import GitHubProfileSignal
 from fleet_recruiter_ai_agent.schemas.jobs import JobDetail
 from fleet_recruiter_ai_agent.services.llm import LLMClient
 
@@ -11,6 +12,7 @@ class ScorecardEvaluationInput(BaseModel):
     job: JobDetail
     jd_analysis: JDAnalysis
     resume_analysis: ResumeAnalysis
+    github_profiles: list[GitHubProfileSignal] = Field(default_factory=list)
 
 
 def evaluate_scorecard(payload: ScorecardEvaluationInput, llm_client: LLMClient) -> CandidateScorecard:

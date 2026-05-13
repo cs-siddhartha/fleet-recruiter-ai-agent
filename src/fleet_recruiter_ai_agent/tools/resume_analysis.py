@@ -15,7 +15,10 @@ def analyze_resume(payload: ResumeAnalysisInput, llm_client: LLMClient) -> Resum
     """Extract structured candidate signals from parsed resume text with OpenAI."""
 
     return llm_client.parse(
-        "Analyze candidate resumes into structured recruiting evidence. Focus on concrete impact, projects, links, and risks.",
+        (
+            "Analyze candidate resumes into structured recruiting evidence. "
+            "Focus on concrete impact, projects, links, and risks."
+        ),
         f"File name: {payload.parsed_resume.file_name}\n\nResume markdown:\n{payload.parsed_resume.text}",
         ResumeAnalysis,
     )
