@@ -8,12 +8,19 @@ JOBS: tuple[JobDetail, ...] = (
         company="FleetWorks",
         location="Remote",
         summary="Build AI systems that evaluate technical talent with structured evidence.",
-        job_description=(
-            "Build Python services that parse resumes, analyze job descriptions, evaluate candidate fit, "
-            "and produce explainable scorecards. Requires strong Python, FastAPI, Pydantic, LLM integration, "
-            "API design, and practical evaluation workflows. GitHub data, public profile analysis, and "
-            "human-in-the-loop recruiting experience are strong pluses."
-        ),
+        job_description="""Build Python services that parse resumes, analyze job descriptions,
+evaluate candidate fit, and produce explainable scorecards.
+
+Key requirements:
+- Strong Python, FastAPI, and Pydantic experience
+- LLM integration and structured-output workflows
+- API design and practical evaluation systems
+- GitHub data or public profile analysis experience
+- Clear documentation and modular tool design
+
+Nice to have:
+- Human-in-the-loop recruiting product experience
+- Experience building evidence-backed AI workflows""",
     ),
     JobDetail(
         id="frontend-platform-engineer",
@@ -21,11 +28,18 @@ JOBS: tuple[JobDetail, ...] = (
         company="FleetWorks",
         location="New York, NY",
         summary="Own fast React workflows for recruiter and candidate products.",
-        job_description=(
-            "Build recruiter-facing product surfaces in React and TanStack. Requires TypeScript, routing, "
-            "data fetching, component design, performance, accessibility, file uploads, polling workflows, "
-            "and polished operational interfaces."
-        ),
+        job_description="""Build recruiter-facing product surfaces in React and TanStack.
+
+Key requirements:
+- Strong TypeScript and React experience
+- Routing, data fetching, and component design
+- Performance optimization and accessibility
+- File upload and polling workflows
+- Polished operational interfaces for repeated use
+
+Nice to have:
+- Experience with API-backed dashboards
+- Ability to turn ambiguous workflows into simple product surfaces""",
     ),
     JobDetail(
         id="ml-platform-engineer",
@@ -33,11 +47,18 @@ JOBS: tuple[JobDetail, ...] = (
         company="FleetWorks",
         location="San Francisco, CA",
         summary="Build reliable infrastructure for model-backed products and evaluation pipelines.",
-        job_description=(
-            "Build services for model orchestration, evaluation, observability, and production deployment. "
-            "Requires Python, API design, model evaluation, data pipelines, reliable background processing, "
-            "monitoring, and cloud deployment."
-        ),
+        job_description="""Build services for model orchestration, evaluation, observability, and production deployment.
+
+Key requirements:
+- Python and API design
+- Model evaluation and data pipeline experience
+- Reliable background processing
+- Monitoring and cloud deployment
+- Quality gates for model-backed systems
+
+Nice to have:
+- LLM structured-output experience
+- Experiment tracking or evaluation infrastructure experience""",
     ),
 )
 

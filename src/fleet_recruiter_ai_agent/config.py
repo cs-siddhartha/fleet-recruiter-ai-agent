@@ -8,6 +8,7 @@ load_dotenv()
 
 
 class Settings(BaseModel):
+    """Validated application settings loaded from environment variables."""
 
     app_name: str = "Fleet Recruiter AI Agent"
     min_match_score: float = Field(default=0.7, ge=0, le=1)
@@ -24,8 +25,8 @@ def load_settings() -> Settings:
     openai_api_key = os.getenv("OPENAI_API_KEY")
     return Settings(
         app_name=os.getenv("APP_NAME", "Fleet Recruiter AI Agent"),
-        min_match_score=float(os.getenv("MIN_MATCH_SCORE", "0")),
-        max_candidates=int(os.getenv("MAX_CANDIDATES", "0")),
+        min_match_score=float(os.getenv("MIN_MATCH_SCORE", "0.7")),
+        max_candidates=int(os.getenv("MAX_CANDIDATES", "25")),
         openai_api_key=SecretStr(openai_api_key) if openai_api_key else None,
         openai_model=os.getenv("OPENAI_MODEL", "gpt-5.5"),
         github_api_base_url=os.getenv("GITHUB_API_BASE_URL", "https://api.github.com"),

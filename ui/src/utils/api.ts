@@ -40,6 +40,8 @@ export type EvaluationRecord = {
   result: CandidateScorecard | null
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000'
+
 export async function fetchJobs(): Promise<Array<JobSummary>> {
   return request('/api/jobs')
 }
@@ -59,7 +61,7 @@ export async function fetchEvaluation(evaluationId: string): Promise<EvaluationR
 }
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, init)
+  const response = await fetch(`${API_BASE_URL}${url}`, init)
   if (!response.ok) {
     const detail = await response.text()
     throw new Error(detail || `Request failed with ${response.status}`)

@@ -25,7 +25,7 @@ export const Route = createRootRoute({
       },
       ...seo({
         title:
-          'Fleet Recruiter AI Agent',
+          'Recruiter AI Agent',
         description: `Evaluate candidate resumes against backend-owned job descriptions.`,
       }),
     ],
@@ -64,10 +64,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <header className="app-header">
-          <Link to="/" className="brand">
-            Fleet Recruiter
-          </Link>
+        <header className="border-border bg-background/95 sticky top-0 z-10 border-b backdrop-blur">
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+            <Link to="/" className="font-heading text-2xl text-foreground">
+              Recruiter Evaluation
+            </Link>
+          </div>
         </header>
         <main>{children ?? <Outlet />}</main>
         <TanStackRouterDevtools position="bottom-right" />

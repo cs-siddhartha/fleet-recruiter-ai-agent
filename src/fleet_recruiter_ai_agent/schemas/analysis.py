@@ -32,8 +32,14 @@ class ScorecardCategory(BaseModel):
 
     name: str = Field(min_length=1)
     score: float = Field(ge=0, le=1)
-    comment: str = Field(min_length=1)
-    evidence: list[str] = Field(default_factory=list)
+    comment: str = Field(
+        min_length=1,
+        description="One concise paragraph explaining the score for this category.",
+    )
+    evidence: list[str] = Field(
+        default_factory=list,
+        description="Short evidence bullets. Each item must be standalone and under 160 characters.",
+    )
 
 
 class CandidateScorecard(BaseModel):
@@ -44,7 +50,16 @@ class CandidateScorecard(BaseModel):
     overall_score: float = Field(ge=0, le=1)
     summary: str = Field(min_length=1)
     categories: list[ScorecardCategory] = Field(min_length=1)
-    missing_information: list[str] = Field(default_factory=list)
-    risks_or_concerns: list[str] = Field(default_factory=list)
-    interview_questions: list[str] = Field(default_factory=list)
+    missing_information: list[str] = Field(
+        default_factory=list,
+        description="Atomic missing-information bullets. Do not combine multiple bullets into one string.",
+    )
+    risks_or_concerns: list[str] = Field(
+        default_factory=list,
+        description="Atomic risk bullets. Do not combine multiple concerns into one string.",
+    )
+    interview_questions: list[str] = Field(
+        default_factory=list,
+        description="One interview question per item. Do not combine multiple questions into one string.",
+    )
     confidence: float = Field(ge=0, le=1)

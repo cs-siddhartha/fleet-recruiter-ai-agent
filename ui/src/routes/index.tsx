@@ -1,6 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
+import { Badge } from '~/components/ui/badge'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card'
 import { fetchJobs, type JobSummary } from '~/utils/api'
 
 export const Route = createFileRoute('/')({
@@ -22,22 +30,33 @@ function JobListPage() {
   }, [])
 
   return (
-    <div className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Open roles</p>
-        <h1>Pick a job, then submit a candidate resume.</h1>
+    <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10">
+      <section className="grid gap-3">
+        <Badge variant="outline">Open roles</Badge>
+        <h1 className="font-heading max-w-3xl text-4xl leading-tight md:text-5xl">
+          Select any job below
+        </h1>
+        <p className="text-muted-foreground max-w-2xl text-base leading-7">
+          Review job descriptions and run a structured AI scorecard for each candidate.
+        </p>
       </section>
 
-      {isLoading ? <p className="muted">Loading jobs...</p> : null}
-      {error ? <p className="error-text">{error}</p> : null}
+      {isLoading ? <p className="text-muted-foreground">Loading jobs...</p> : null}
+      {error ? <p className="text-destructive">{error}</p> : null}
 
-      <section className="job-grid">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (
-          <a className="job-card" href={`/jobs/${job.id}`} key={job.id}>
-            <span>{job.company}</span>
-            <h2>{job.title}</h2>
-            <p>{job.summary}</p>
-            <small>{job.location}</small>
+          <a className="group block" href={`/jobs/${job.id}`} key={job.id}>
+            <Card className="h-full transition-colors group-hover:border-primary">
+              <CardHeader>
+                <Badge>{job.company}</Badge>
+                <CardTitle>{job.title}</CardTitle>
+                <CardDescription>{job.location}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm leading-6">{job.summary}</p>
+              </CardContent>
+            </Card>
           </a>
         ))}
       </section>

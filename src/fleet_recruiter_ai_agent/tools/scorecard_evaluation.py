@@ -21,7 +21,10 @@ def evaluate_scorecard(payload: ScorecardEvaluationInput, llm_client: LLMClient)
     return llm_client.parse(
         (
             "Evaluate a candidate against a job. Do not produce a hard pass/fail. "
-            "Return an explainable scorecard with comments, evidence, risks, and interview questions."
+            "Return an explainable scorecard with comments, evidence, risks, and interview questions. "
+            "For missing_information, risks_or_concerns, and interview_questions: each array item must be "
+            "one short standalone bullet. Do not pack multiple bullets or multiple questions into one string. "
+            "Prefer 3-6 items per array, each under 180 characters."
         ),
         payload.model_dump_json(),
         CandidateScorecard,

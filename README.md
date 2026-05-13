@@ -28,6 +28,7 @@ npm run dev
 ```
 
 The frontend shows jobs, lets a user upload a PDF resume, polls evaluation status, and renders the scorecard. In dev, `/api` is proxied to the FastAPI backend on port `8000`.
+By default the UI calls `http://127.0.0.1:8000`; override with `VITE_API_BASE_URL` if needed.
 
 ## Flow
 
