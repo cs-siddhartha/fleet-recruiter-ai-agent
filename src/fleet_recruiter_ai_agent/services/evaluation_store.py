@@ -51,5 +51,15 @@ class EvaluationStore:
             self._records[evaluation_id] = record
             return record
 
+    def save_resume_text(self, evaluation_id: str, resume_text: str) -> EvaluationRecord:
+        """Store parsed resume text and mark parsing as complete."""
+
+        with self._lock:
+            record = self._records[evaluation_id].model_copy(
+                update={"status": EvaluationStatus.RUNNING, "stage": EvaluationStage.ANALYZING, "resume_text": resume_text}
+            )
+            self._records[evaluation_id] = record
+            return record
+
 
 evaluation_store = EvaluationStore()

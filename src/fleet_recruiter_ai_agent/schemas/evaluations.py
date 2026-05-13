@@ -31,3 +31,4 @@ class EvaluationRecord(BaseModel):
     status: EvaluationStatus
     stage: EvaluationStage
     error: str | None = None
+    resume_text: str | None = None
