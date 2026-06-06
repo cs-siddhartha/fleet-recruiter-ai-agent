@@ -13,17 +13,16 @@ OPENAI_API_KEY=your_key
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 REDIS_URL=redis://localhost:6379/0
 MEMORY_NAMESPACE=fleet-recruiter
-MEMORY_TOP_K=5
-MEMORY_SEMANTIC_WEIGHT=0.6
-MEMORY_LEXICAL_WEIGHT=0.4
 SEMANTIC_CHUNK_BUFFER_SIZE=1
 SEMANTIC_CHUNK_BREAKPOINT_PERCENTILE=95
 ```
 
-Redis will hold persisted memory chunks and metadata. FAISS will provide semantic
-vector search, while BM25 will provide lexical text search. The two result sets
-will be fused into one ranked memory lookup in a later implementation increment.
-LangChain performs semantic chunking with OpenAI embeddings before indexing.
+Redis stores one analyzed memory record per job ID: the original job description,
+and its structured `JDAnalysis`. Candidate resumes and scorecards are not retained.
+
+Semantic chunking is intentionally disabled while applications target a known `job_id`.
+It is reserved for a platform extension where a candidate uploads a resume without
+selecting a job and the system searches across indexed jobs to recommend matches.
 
 ## Backend
 

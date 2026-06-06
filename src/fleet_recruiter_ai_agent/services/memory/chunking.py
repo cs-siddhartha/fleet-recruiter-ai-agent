@@ -4,12 +4,15 @@ from langchain_openai import OpenAIEmbeddings
 from fleet_recruiter_ai_agent.config import settings
 
 
-class SemanticChunker:
+# TODO(platform): Enable this chunker when the product supports resume-to-all-jobs
+# discovery. The current evaluation flow receives a job ID and retrieves its complete
+# JDAnalysis directly from Redis, so semantic chunks are not created or stored yet.
+class SemanticChunker:  # pylint: disable=too-few-public-methods
     """Use OpenAI embedding similarity to split source text at topic changes.
 
-    Memory ingestion needs coherent text segments before Redis persistence and hybrid
-    indexing. This wrapper owns LangChain configuration and exposes only plain strings
-    so the rest of the memory system does not depend on LangChain document types.
+    Job memory keeps coherent source sections beside the structured JD analysis. This
+    wrapper owns LangChain configuration and exposes only plain strings so the Redis
+    record does not depend on LangChain document types.
     """
 
     def __init__(self) -> None:

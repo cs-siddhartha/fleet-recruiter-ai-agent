@@ -20,9 +20,6 @@ class Settings(BaseModel):
     public_fetch_timeout_seconds: float = Field(default=8, ge=1, le=30)
     redis_url: str = "redis://localhost:6379/0"
     memory_namespace: str = "fleet-recruiter"
-    memory_top_k: int = Field(default=5, ge=1, le=20)
-    memory_semantic_weight: float = Field(default=0.6, ge=0, le=1)
-    memory_lexical_weight: float = Field(default=0.4, ge=0, le=1)
     semantic_chunk_buffer_size: int = Field(default=1, ge=1, le=10)
     semantic_chunk_breakpoint_percentile: float = Field(default=95, gt=0, lt=100)
 
@@ -42,9 +39,6 @@ def load_settings() -> Settings:
         public_fetch_timeout_seconds=float(os.getenv("PUBLIC_FETCH_TIMEOUT_SECONDS", "8")),
         redis_url=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         memory_namespace=os.getenv("MEMORY_NAMESPACE", "fleet-recruiter"),
-        memory_top_k=int(os.getenv("MEMORY_TOP_K", "5")),
-        memory_semantic_weight=float(os.getenv("MEMORY_SEMANTIC_WEIGHT", "0.6")),
-        memory_lexical_weight=float(os.getenv("MEMORY_LEXICAL_WEIGHT", "0.4")),
         semantic_chunk_buffer_size=int(os.getenv("SEMANTIC_CHUNK_BUFFER_SIZE", "1")),
         semantic_chunk_breakpoint_percentile=float(
             os.getenv("SEMANTIC_CHUNK_BREAKPOINT_PERCENTILE", "95")
