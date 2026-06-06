@@ -23,8 +23,8 @@ class Settings(BaseModel):
     memory_top_k: int = Field(default=5, ge=1, le=20)
     memory_semantic_weight: float = Field(default=0.6, ge=0, le=1)
     memory_lexical_weight: float = Field(default=0.4, ge=0, le=1)
-    semantic_chunk_similarity_threshold: float = Field(default=0.72, ge=0, le=1)
-    semantic_chunk_max_chars: int = Field(default=1800, ge=200, le=8000)
+    semantic_chunk_buffer_size: int = Field(default=1, ge=1, le=10)
+    semantic_chunk_breakpoint_percentile: float = Field(default=95, gt=0, lt=100)
 
 
 def load_settings() -> Settings:
@@ -45,10 +45,10 @@ def load_settings() -> Settings:
         memory_top_k=int(os.getenv("MEMORY_TOP_K", "5")),
         memory_semantic_weight=float(os.getenv("MEMORY_SEMANTIC_WEIGHT", "0.6")),
         memory_lexical_weight=float(os.getenv("MEMORY_LEXICAL_WEIGHT", "0.4")),
-        semantic_chunk_similarity_threshold=float(
-            os.getenv("SEMANTIC_CHUNK_SIMILARITY_THRESHOLD", "0.72")
+        semantic_chunk_buffer_size=int(os.getenv("SEMANTIC_CHUNK_BUFFER_SIZE", "1")),
+        semantic_chunk_breakpoint_percentile=float(
+            os.getenv("SEMANTIC_CHUNK_BREAKPOINT_PERCENTILE", "95")
         ),
-        semantic_chunk_max_chars=int(os.getenv("SEMANTIC_CHUNK_MAX_CHARS", "1800")),
     )
 
 
