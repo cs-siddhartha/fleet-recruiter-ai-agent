@@ -1,7 +1,9 @@
+from threading import Lock
+
 from fleet_recruiter_ai_agent.schemas.jobs import JobDetail
 
 
-JOBS: tuple[JobDetail, ...] = (
+_SEEDED_JOBS: tuple[JobDetail, ...] = (
     JobDetail(
         id="ai-recruiting-engineer",
         title="AI Recruiting Engineer",
@@ -62,14 +64,39 @@ Nice to have:
     ),
 )
 
+_jobs: dict[str, JobDetail] = {job.id: job for job in _SEEDED_JOBS}
+_jobs_lock = Lock()
+
 
 def list_jobs() -> list[JobDetail]:
-    """Return all seeded jobs owned by the backend."""
+    """Return a stable snapshot of all jobs currently owned by the backend."""
 
-    return list(JOBS)
+    with _jobs_lock:
+        return list(_jobs.values())
 
 
 def get_job(job_id: str) -> JobDetail | None:
-    """Return one seeded job by id, or None when it does not exist."""
+    """Return one job by ID, or None when it does not exist."""
 
-    return next((job for job in JOBS if job.id == job_id), None)
+    with _jobs_lock:
+        return _jobs.get(job_id)
+
+
+def create_job(job: JobDetail) -> JobDetail:
+    """Publish a newly analyzed job while preventing accidental ID replacement."""
+
+    with _jobs_lock:
+        if job.id in _jobs:
+            raise ValueError(f"Job already exists: {job.id}")
+        _jobs[job.id] = job
+        return job
+
+
+def update_job(job: JobDetail) -> JobDetail:
+    """Replace an existing analyzed job while preserving its backend-owned ID."""
+
+    with _jobs_lock:
+        if job.id not in _jobs:
+            raise KeyError(job.id)
+        _jobs[job.id] = job
+        return job

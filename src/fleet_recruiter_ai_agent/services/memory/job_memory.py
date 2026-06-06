@@ -6,7 +6,7 @@ from fleet_recruiter_ai_agent.services.memory.store import RedisMemoryStore
 from fleet_recruiter_ai_agent.tools.jd_analysis import JDAnalysisInput, analyze_jd
 
 
-class JobMemoryService: 
+class JobMemoryService:  # pylint: disable=too-few-public-methods
     """Resolve reusable JD analysis before candidate-specific work begins.
 
     Job descriptions are shared across many applications, so analyzing them for every
@@ -24,12 +24,17 @@ class JobMemoryService:
         """Return current job memory, analyzing and persisting the JD on a miss or edit."""
 
         existing = self._store.get(job.id)
-        if existing is not None and existing.job_description == job.job_description:
+        if (
+            existing is not None
+            and existing.job_title == job.title
+            and existing.job_description == job.job_description
+        ):
             return existing
 
         analysis = analyze_jd(JDAnalysisInput(job=job), llm_client)
         memory = JobMemory(
             job_id=job.id,
+            job_title=job.title,
             job_description=job.job_description,
             analysis=analysis,
         )

@@ -12,6 +12,7 @@ class JobMemory(BaseModel):
     """
 
     job_id: str = Field(min_length=1)
+    job_title: str = Field(min_length=1)
     job_description: str = Field(min_length=1)
     analysis: JDAnalysis
 
